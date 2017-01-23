@@ -1,0 +1,65 @@
+﻿.ui-jqdropdownlist-button
+{
+	padding-left: 3px;
+	padding-right: 3px;
+    padding-top: 3px;
+	padding-bottom: 3px;	
+	text-align: left;	
+    margin: 1px 0;
+    padding-left: 5px;
+	outline: 0;
+	box-shadow: none;
+	font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif" !important;
+    font-size: 80% !important;
+	line-height: normal;
+	border-radius: 0;
+	list-style: none;	
+
+}
+
+.ui-jqdropdownlist-toggle-image
+{
+	float: right;	
+}
+
+.ui-jqdropdownlist-button-text
+{
+	padding-top: 4px;
+	margin-top: 4px;
+}
+
+.ui-jqdropdownlist-dropdown-wrapper {
+	display: none;	
+	position: absolute;
+	z-index: 10000;	
+}
+
+.ui-jqdropdownlist-dropdown {	
+	overflow-y: auto;	
+	overflow-x: hidden;
+}
+
+.ui-jqdropdownlist-item a table tr td
+{
+	height : 20px;
+}
+
+.ui-jqdropdownlist-item-text
+{	
+	position: relative;
+    margin: 0;   
+    cursor: pointer;
+    min-height: 0;
+    font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
+    font-size: 80%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;			
+}
+
+.ui-jqdropdownlist-item-image
+{	
+	border: 0;
+	margin-top: 2px;
+}

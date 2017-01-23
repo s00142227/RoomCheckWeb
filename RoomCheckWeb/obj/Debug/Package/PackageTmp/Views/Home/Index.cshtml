@@ -1,0 +1,26 @@
+﻿@using Trirand.Web.Mvc
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<link href="~/Content/themes/base/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet"/>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/i18n/grid.locale-en.js"></script>
+<script src="~/Scripts/jquery.jqGrid.min.js"></script>
+<script src="~/Scripts/Room.js"></script>
+
+<div class="page-header">
+    <h1>RoomCheck <small>Current Room statuses</small></h1>
+    
+</div>
+
+<div class="row">
+    
+    <div>
+        <table id="grid"></table>
+        <div id="pager"></div>
+    </div>
+
+</div>

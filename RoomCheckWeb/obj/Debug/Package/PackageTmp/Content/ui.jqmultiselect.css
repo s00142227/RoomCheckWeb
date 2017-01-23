@@ -1,0 +1,115 @@
+﻿.ui-jqmultiselect-placeholder
+{	
+	padding-left: 1px;
+	padding-right: 1px;
+	height: 100%;
+	min-height: 16px;
+	text-align: left;
+}
+
+.ui-jqmultiselect-choices
+{
+	/*position: relative;*/
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+
+.ui-jqmultiselect-search-choice
+{
+	float: left;
+	border-style: solid;
+	border-width: 1px;
+	-webkit-appearance: none;
+	list-style: none;
+	white-space: nowrap;    
+    cursor: pointer;
+    min-height: 0;
+    font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif" !important;
+    font-size: 80% !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    padding-top: 1px !important;
+    padding-bottom: 1px !important;
+    font-weight: normal !important;
+}   
+
+
+.ui-jqmultiselect-search-choice span:hover
+{
+	cursor:pointer;
+}
+
+ui-jqmultiselect-search-field
+{
+	margin: 0;
+	padding: 0;
+    min-height: 0;
+	white-space: nowrap;
+	float: left;
+	list-style: none;
+	
+}
+
+.ui-jqmultiselect-search-input
+{
+	margin: 1px 0;
+	height: 15px;
+    padding-left: 5px;
+	outline: 0;
+	border: 0 !important;
+	background: transparent !important;
+	box-shadow: none;
+	font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif" !important;
+    font-size: 80% !important;
+	line-height: normal;
+	border-radius: 0;
+	list-style: none;
+}
+
+.ui-jqmultiselect-toggle-image
+{
+	float: right;	
+    position: relative;
+}
+
+.ui-jqmultiselect-button-text
+{
+	
+}
+
+.ui-jqmultiselect-dropdown-wrapper {
+	display: none;	
+	position: absolute;
+	z-index: 10000;	
+}
+
+.ui-jqmultiselect-dropdown {	
+	overflow-y: auto;	
+	overflow-x: hidden;
+}
+
+.ui-jqmultiselect-item a table tr td
+{
+	height : 20px;
+}
+
+.ui-jqmultiselect-item-text
+{	
+    position: relative;
+    margin: 0;   
+    cursor: pointer;
+    min-height: 0;
+    font-family: "Trebuchet MS", "Helvetica", "Arial", "Verdana", "sans-serif";
+    font-size: 80%;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;	
+}
+
+.ui-jqmultiselect-item-image
+{	
+	border: 0;
+	margin-top: 2px;
+}
