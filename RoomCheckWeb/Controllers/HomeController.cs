@@ -82,7 +82,7 @@ namespace RoomCheckWeb.Controllers
                 if (ModelState.IsValid)
                 {
                     dbr.UpdateRoomFull(objRoom.ID, Convert.ToInt32(objRoom.RoomTypeID),
-                        Convert.ToInt32(objRoom.OccupiedStatusID));
+                        Convert.ToInt32(objRoom.OccupiedStatusID),objRoom.CleanStatusID, objRoom.Note);
                     msg = "Saved Successfully";
                 }
                 else

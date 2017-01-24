@@ -39,7 +39,8 @@ namespace RoomCheckWeb.Models
                         var Note = "";
                         if (reader["Note"] is string)
                             Note = (string) reader["Note"];
-                        rooms.Add(new Room(ID, RoomNo, roomOcc, roomClean, roomType, Note));
+                        var User = (int) reader["UserID"];
+                        rooms.Add(new Room(ID, RoomNo, roomOcc, roomClean, roomType, Note, User));
                     }
 
                     
@@ -84,7 +85,7 @@ namespace RoomCheckWeb.Models
                                 if (reader["Note"] is string)
                                     note = (string) reader["Note"];
                                 room = new Room((int)reader["ID"], (string)reader["RoomNo"],
-                                    (int)reader["RoomOccupiedStatusID"], (int)reader["RoomCleanStatusID"], (int)reader["RoomTypeID"], note);
+                                    (int)reader["RoomOccupiedStatusID"], (int)reader["RoomCleanStatusID"], (int)reader["RoomTypeID"], note, (int)reader["UserID"]);
                             }
                         }
                     }
@@ -303,7 +304,7 @@ namespace RoomCheckWeb.Models
 
         }
 
-        public void UpdateRoomFull(int id, int roomType, int occStatus)
+        public void UpdateRoomFull(int id, int roomType, int occStatus,int cleanStatus, string note)
         {
             //TODO: add more fields that might be edited
             MySqlConnection con =
@@ -317,11 +318,13 @@ namespace RoomCheckWeb.Models
                 {
                     con.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("UPDATE RoomTbl SET RoomTypeID = @roomTypeID, RoomOccupiedStatusID = @OccStatusID WHERE ID = @id;", con))
+                    using (MySqlCommand cmd = new MySqlCommand("UPDATE RoomTbl SET RoomTypeID = @roomTypeID, RoomOccupiedStatusID = @OccStatusID, RoomCleanStatusID = @CleanStatusID, Note = @Note WHERE ID = @id;", con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@roomTypeID", roomType);
                         cmd.Parameters.AddWithValue("@OccStatusID", occStatus);
+                        cmd.Parameters.AddWithValue("@CleanStatusID", cleanStatus);
+                        cmd.Parameters.AddWithValue("@Note", note);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -597,7 +600,7 @@ namespace RoomCheckWeb.Models
 
         public void GetAllRoomInfo(ref List<Room> rooms)
         {
-
+            //TODO add event info here somehow
             foreach (Room room in rooms)
             {
                 room.Events = EventsForRoom(room.ID);
@@ -610,6 +613,9 @@ namespace RoomCheckWeb.Models
                 {
                     e.EventType = GetEventTypeByID(e.EventTypeID);
                 }
+                //TOdo: change this to check if any of the events are on currently and then add id
+                if(room.Events.Count > 0)
+                room.CurrentEvent = room.Events[0].Description;
             }
 
             

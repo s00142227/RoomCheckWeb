@@ -21,9 +21,10 @@ namespace RoomCheck
         public int UserID { get; set; }
         public User User { get; set; }
         public List<Event> Events { get; set; }
+        public string CurrentEvent { get; set; }
         public DateTime Date { get; set; }
 
-        public Room(int id,string roomNo, int occupiedStatus, int cleanStatus, int roomType, string note)
+        public Room(int id,string roomNo, int occupiedStatus, int cleanStatus, int roomType, string note, int user)
         {
             ID = id;
             RoomNo = roomNo;
@@ -31,7 +32,9 @@ namespace RoomCheck
             CleanStatusID = cleanStatus;
             RoomTypeID = roomType;
             Note = note;
+            UserID = user;
             //todo: add list of events here
+
 
         }
 
