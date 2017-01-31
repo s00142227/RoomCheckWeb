@@ -5,7 +5,7 @@ $(function () {
                 url: "/Home/GetRooms",
                 datatype: 'json',
                 mtype: 'Get',
-                colNames: ['ID', 'RoomNo', 'RoomType', 'OccupiedStatus'],
+                colNames: ['ID', 'Room No', 'Room Type', 'Occupied Status', 'Cleaning Status', 'Note', 'Event', 'Cleaner'],
                 colModel: [
                     { key: true, hidden: true, name: 'ID', index: 'ID' },
                     { key: false, name: 'RoomNo', index: 'RoomNo' },
@@ -15,8 +15,9 @@ $(function () {
                         //todo: display description instead of id
                         index: 'RoomTypeID',
                         editable: true,
+                        formatter: 'select',
                         edittype: 'select',
-                        editoptions: { value: { '1': 'Stay', '2': 'Departure', '3': 'Empty' } }
+                        editoptions: { value: {  1: 'Stay', 2: 'Departure', 3: 'Empty' } }
                     },
                     {
                         key: false,
@@ -24,15 +25,62 @@ $(function () {
                         index: 'OccupiedStatusID',
                         editable: true,
                         edittype: 'select',
+                        formatter: 'select',
                         editoptions: {
                             value: {
-                                '1': 'Unknown',
-                                '2': 'Unoccupied',
-                                '3': 'Occupied',
-                                '3': 'Checked Out'
+                                1: 'Unknown',
+                                2: 'Unoccupied',
+                                3: 'Occupied',
+                                3: 'Checked Out'
                             }
                         }
-                    }
+                    },
+                    {
+                        key: false,
+                        name: 'CleanStatusID',
+                        index: 'CleanStatusID',
+                        editable: true,
+                        edittype: 'select',
+                        formatter: 'select',
+                        editoptions: {
+                            value: {
+                                1: 'Uncleaned',
+                                2: 'InProgress',
+                                3: 'Cleaned'
+                            }
+                        }
+                    },
+                    {
+                        key: false,
+                        name: 'Note',
+                        index: 'Note',
+                        editable: true,
+                        edittype: 'text',
+                        editoptions: {
+                            size: '10'
+                        }
+                    },
+                     {
+                         key: false,
+                         name: 'CurrentEvent',
+                         index: 'CurrentEvent'                         
+                     },
+                     {
+                         key: false,
+                         name: 'UserID',
+                         index: 'UserID',
+                         editable: true,
+                         edittype: 'select',
+                         formatter: 'select',
+                         editoptions: {
+                             value: {
+                                 1: 'Patricia',
+                                 2: 'Sveta',
+                                 3: 'Jane'
+                             }
+                         }
+                     }
+
                 ],
                 pager: jQuery('#pager'),
                 rowNum: 10,
@@ -63,11 +111,11 @@ $(function () {
                 closeOnEscape: true,
                 closeAfterEdit: true,
                 recreateForm: true,
-                afterComplete: function(response) {
-                    if (response.responseText) {
-                        alert(response.responseText);
-                    }
-                }
+                //afterComplete: function(response) {
+                //    if (response.responseText) {
+                //        alert(response.responseText);
+                //    }
+                //}
             },
             {
                 //add options
@@ -76,11 +124,11 @@ $(function () {
                 closeOnEscape: true,
                 closeAfterEdit: true,
                 recreateForm: true,
-                afterComplete: function(response) {
-                    if (response.responseText) {
-                        alert(response.responseText);
-                    }
-                }
+                //afterComplete: function(response) {
+                //    if (response.responseText) {
+                //        alert(response.responseText);
+                //    }
+                //}
             },
             {
                 //delete options

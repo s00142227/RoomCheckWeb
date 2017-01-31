@@ -39,6 +39,6 @@ table {font-size:1.3em}
     background: #8fbc8f !important;
 }
 
-/*TODO: change images for ui_icons so they can be bigger*/
+/*TODO: change images for ui_icons so they can be bigger (below solution won't work because icons are gotten from a sheet of images'*/
 /*.ui-icon { width: 32px !important; height: 32px !important; }
     .ui-jqgrid-pager { height: 32px !important; }*/

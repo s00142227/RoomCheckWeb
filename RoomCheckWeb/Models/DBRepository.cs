@@ -16,8 +16,7 @@ namespace RoomCheckWeb.Models
 
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
-
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             try
             {
 
@@ -38,12 +37,12 @@ namespace RoomCheckWeb.Models
                         //need to handle null notes
                         var Note = "";
                         if (reader["Note"] is string)
-                            Note = (string) reader["Note"];
-                        var User = (int) reader["UserID"];
+                            Note = (string)reader["Note"];
+                        var User = (int)reader["UserID"];
                         rooms.Add(new Room(ID, RoomNo, roomOcc, roomClean, roomType, Note, User));
                     }
 
-                    
+
 
                 }
             }
@@ -64,8 +63,7 @@ namespace RoomCheckWeb.Models
             Room room = new Room();
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
-
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             try
             {
 
@@ -83,7 +81,7 @@ namespace RoomCheckWeb.Models
                                 //need to handle null note
                                 var note = "";
                                 if (reader["Note"] is string)
-                                    note = (string) reader["Note"];
+                                    note = (string)reader["Note"];
                                 room = new Room((int)reader["ID"], (string)reader["RoomNo"],
                                     (int)reader["RoomOccupiedStatusID"], (int)reader["RoomCleanStatusID"], (int)reader["RoomTypeID"], note, (int)reader["UserID"]);
                             }
@@ -108,11 +106,11 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             RoomOccupiedStatus occStatus = new RoomOccupiedStatus();
             try
             {
-                
+
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
@@ -124,7 +122,7 @@ namespace RoomCheckWeb.Models
                         {
                             while (reader.Read())
                             {
-                                occStatus.Description = (string) reader["Description"];
+                                occStatus.Description = (string)reader["Description"];
                                 occStatus.IconPath = (string)reader["IconPath"];
                             }
                         }
@@ -148,7 +146,7 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             RoomCleanStatus cleanStatus = new RoomCleanStatus();
             try
             {
@@ -189,7 +187,7 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             List<RoomCleanStatus> cleanStatuses = new List<RoomCleanStatus>();
             try
             {
@@ -200,13 +198,13 @@ namespace RoomCheckWeb.Models
 
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM RoomCleanStatusTbl;", con))
                     {
-                        
+
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
                                 RoomCleanStatus cleanStatus = new RoomCleanStatus();
-                                cleanStatus.ID = (int) reader["ID"];
+                                cleanStatus.ID = (int)reader["ID"];
                                 cleanStatus.Description = (string)reader["Description"];
                                 cleanStatus.IconPath = (string)reader["IconPath"];
                                 cleanStatus.BorderImage = (string)reader["BorderImage"];
@@ -233,8 +231,7 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
-            RoomType roomType = new RoomType();
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8"); RoomType roomType = new RoomType();
             try
             {
 
@@ -273,8 +270,7 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
-
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             try
             {
 
@@ -304,13 +300,12 @@ namespace RoomCheckWeb.Models
 
         }
 
-        public void UpdateRoomFull(int id, int roomType, int occStatus,int cleanStatus, string note)
+        public void UpdateRoomFull(int id, int roomType, int occStatus, int cleanStatus, string note)
         {
             //TODO: add more fields that might be edited
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
-
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             try
             {
 
@@ -346,7 +341,7 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             EventType eventType = new EventType();
             try
             {
@@ -362,7 +357,7 @@ namespace RoomCheckWeb.Models
                         {
                             while (reader.Read())
                             {
-                                eventType.ID = (int) reader["ID"];
+                                eventType.ID = (int)reader["ID"];
                                 eventType.Description = (string)reader["Description"];
                                 eventType.IconPath = (string)reader["IconPath"];
                             }
@@ -387,7 +382,7 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             Event eventE = new Event();
             try
             {
@@ -429,7 +424,7 @@ namespace RoomCheckWeb.Models
         {
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             List<Room> rooms = new List<Room>();
             try
             {
@@ -438,7 +433,7 @@ namespace RoomCheckWeb.Models
                 {
                     con.Open();
 
-                   
+
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM RoomEvent where EventID = @id;", con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
@@ -446,7 +441,7 @@ namespace RoomCheckWeb.Models
                         {
                             while (reader.Read())
                             {
-                                int roomID = (int) reader["RoomID"];
+                                int roomID = (int)reader["RoomID"];
                                 Room room = GetRoomById(roomID);
                                 //todo: only add to list if the date is today's date
                                 rooms.Add(room);
@@ -473,8 +468,7 @@ namespace RoomCheckWeb.Models
             bool result = false;
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
-
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             try
             {
 
@@ -509,7 +503,7 @@ namespace RoomCheckWeb.Models
             List<Event> events = new List<Event>();
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             if (CheckEvents(id))
             {
                 try
@@ -532,11 +526,11 @@ namespace RoomCheckWeb.Models
                                 while (reader.Read())
                                 {
                                     Event ev = new Event();
-                                    ev.ID = (int) reader["ID"];
-                                    ev.Description = (string) reader["Description"];
-                                    ev.EventTypeID = (int) reader["EventTypeID"];
-                                    ev.StartTime = (DateTime) reader["StartTime"];
-                                    ev.EndTime = (DateTime) reader["EndTime"];
+                                    ev.ID = (int)reader["ID"];
+                                    ev.Description = (string)reader["Description"];
+                                    ev.EventTypeID = (int)reader["EventTypeID"];
+                                    ev.StartTime = (DateTime)reader["StartTime"];
+                                    ev.EndTime = (DateTime)reader["EndTime"];
                                     events.Add(ev);
                                 }
                             }
@@ -553,7 +547,7 @@ namespace RoomCheckWeb.Models
                     con.Close();
                 }
             }
-            
+
 
             return events;
         }
@@ -562,8 +556,7 @@ namespace RoomCheckWeb.Models
             EventType et = new EventType();
             MySqlConnection con =
                    new MySqlConnection(
-                       "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
-
+"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             try
             {
 
@@ -579,7 +572,7 @@ namespace RoomCheckWeb.Models
                             {
                                 et.ID = (int)reader["ID"];
                                 et.Description = (string)reader["Description"];
-                                et.IconPath = (string) reader["IconPath"];
+                                et.IconPath = (string)reader["IconPath"];
                             }
                         }
                     }
@@ -614,16 +607,16 @@ namespace RoomCheckWeb.Models
                     e.EventType = GetEventTypeByID(e.EventTypeID);
                 }
                 //TOdo: change this to check if any of the events are on currently and then add id
-                if(room.Events.Count > 0)
-                room.CurrentEvent = room.Events[0].Description;
+                if (room.Events.Count > 0)
+                    room.CurrentEvent = room.Events[0].Description;
             }
 
-            
-            
+
+
         }
 
 
     }
 
-    
+
 }
