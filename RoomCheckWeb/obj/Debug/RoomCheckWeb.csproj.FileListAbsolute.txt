@@ -43,3 +43,15 @@ C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\Google.Protobuf.dll
 C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\MySql.Data.dll
 C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\System.Runtime.InteropServices.RuntimeInformation.dll
 C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\Google.Protobuf.xml
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PCLCrypto.dll
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.BCrypt.dll
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.Kernel32.dll
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.NCrypt.dll
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.Windows.Core.dll
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\Validation.dll
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PCLCrypto.xml
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.BCrypt.xml
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.Kernel32.xml
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.NCrypt.xml
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\PInvoke.Windows.Core.xml
+C:\Users\Katie\Desktop\PRJ400\RoomCheckWeb\RoomCheckWeb\bin\Validation.xml
