@@ -6,6 +6,7 @@ using System.Web.Helpers;
 using System.Web.Mvc;
 using RoomCheck;
 using RoomCheckWeb.Models;
+using RoomCheckWeb.ViewModels;
 
 namespace RoomCheckWeb.Controllers
 {
@@ -54,18 +55,26 @@ namespace RoomCheckWeb.Controllers
 
         }
 
-        public ActionResult About()
+        public ActionResult About()//rooms
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            if (Session["UserEmail"] != null)
+            {
+                //populate fiends from database
+                RoomCleaner model = new RoomCleaner();
+                model.Rooms = dbr.GetAllRooms();
+                model.Cleaners = dbr.GetAllCleaners();
+                return View(model);
+            }
+            return RedirectToAction("Login");
         }
 
-        public ActionResult Contact()
+        public ActionResult Contact()//events
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            if (Session["UserEmail"] != null)
+            {
+                return View();
+            }
+            return RedirectToAction("Login");
         }
 
         [HttpPost]

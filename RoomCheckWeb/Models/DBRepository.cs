@@ -153,6 +153,51 @@ namespace RoomCheckWeb.Models
             return users;
         }
 
+        public List<User> GetAllCleaners()
+        {
+            //MySqlConnection con =
+            //       new MySqlConnection(
+            //           "Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
+            List<User> users = new List<User>();
+
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("select * from UserTbl where UserTypeID = 1", con))
+                    {
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                User u = new User();
+                                u.ID = (int)reader["ID"];
+                                u.Email = (string)reader["Email"];
+                                u.Password = (byte[])reader["Password"];
+                                u.Salt = (byte[])reader["Salt"];
+                                u.FirstName = (string)reader["FirstName"];
+                                u.UserTypeID = (int)reader["UserTypeID"];
+                                users.Add(u);
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                //Toast.MakeText(this, ex.ToString(), ToastLength.Long).Show();
+            }
+            finally
+            {
+                con.Close();
+            }
+
+            return users;
+        }
+
         public void CreateUser(string email, string firstName, string password, string hotelId)
         {
 

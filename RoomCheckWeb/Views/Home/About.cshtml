@@ -1,7 +1,381 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Rooms";
+    @model RoomCheckWeb.ViewModels.RoomCleaner
 }
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title <small>Input Data</small></h2>
 <h3>@ViewBag.Message</h3>
 
-<p>Use this area to provide additional information.</p>
+<style>
+    .scrlList {
+        border: 2px solid #ccc;
+        width: 100px;
+        height: 100px;
+        overflow-y: scroll;
+    }
+
+    .cleanerTbl {
+        border: 2px solid #ccc;
+        width: 250px;
+        height: 150px;
+        overflow-y: scroll;
+    }
+</style>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="container">
+    <div class="row">
+        <form role="form">
+            <div class="row center-block">
+                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <div class="row form-group">
+                        <label for="txtDate">Date</label>
+                        <input type="date" class="form-control" id="txtDate" onChange="updateModalDate();" placeholder="DD/MM/YYYY">
+                    </div>
+                    <div class="row">
+                        <label>Room Types</label>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6" id="stays">
+                            <label for="lstStays">Stays</label>
+                            <div class="scrlList" id="lstStays">
+                                @foreach (var r in Model.Rooms)
+                                {
+                                    <div>
+                                        <input type="checkbox" name="@r.RoomNo" />@r.RoomNo
+                                    </div>
+                                }
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-6" id="departures">
+                            <label for="lstDepartures">Departures</label>
+                            <div class="scrlList" id="lstDepartures">
+                                @foreach (var r in Model.Rooms)
+                                {
+                                    <div>
+                                        <input type="checkbox" name="@r.RoomNo" />@r.RoomNo
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4 bg-info">
+                    <div class="row">
+                        <label for="exampleInputFile">Assign Cleaners</label>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label for="lstCleaners">Cleaner</label>
+                            </div>
+                            <div class="row">
+                                <select id="lstCleaners">
+                                    @foreach (var c in Model.Cleaners)
+                                    {
+                                        <option value="@c.ID">@c.FirstName</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="Rooms">Rooms</label>
+                            <div class="scrlList" id="lstRoomsCleaners">
+                                @foreach (var r in Model.Rooms)
+                                {
+                                    <div id="room-@r.RoomNo">
+                                        <input type="checkbox" name="@r.RoomNo" />@r.RoomNo
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <button type="button" class="btn btn-info col-md-offset-4" id="btnAssign">Assign</button>
+                    </div>
+                    <div class="row form-group">
+                        <label for="tblRoomCleaners">Review Cleaners Assigned</label>
+                        <div class="cleanerTbl bg-info">
+                            <table class="table table-striped small" id="tblCleaners"></table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="form-group row col-md-offset-4">
+                <a class="btn btn-success" data-toggle="modal" data-target=".bootstrapmodal">Submit</a>
+            </div>
+            <div class="modal fade bootstrapmodal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info">
+                            <button data-dismiss="modal" class="close"><span>&times;</span></button>
+                            <div class="modal-title">
+                                <b>Review Details</b>
+                            </div>
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="row">
+                                <div>
+                                    <label>Date:</label>
+                                </div>
+                                <div id="mdDate">None Selected</div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label>Stays</label>
+                                </div>
+                                <div id="mdStays">None selected</div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label>Departures</label>
+                                </div>
+                                <div id="mdDeps">None Selected</div>
+                            </div>
+                            <div class="row">
+                                <div class="row">
+                                    <div>
+                                        <label>Empty</label>
+                                    </div>
+                                    <div id="mdEmpty">None</div>
+                                </div>
+                                <div class="row">
+                                    <div>
+                                        <label>Cleaners</label>
+                                    </div>
+                                    <div class="col-md-offset-3">
+                                        <div class="cleanerTbl bg-info">
+                                            <table id="tblCleanersModal" class="table table-striped small"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" id="btnSubmit">Submit</button>
+                            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+        <br /><br />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document)
+        .ready(function () {
+
+        });
+
+    $('#btnSubmit')
+        .click(function (e) {
+
+            e.preventDefault();
+
+            var requestData;
+            var date = $('#txtDate').val();
+            var stays = $('#mdStays').val();
+            var deps = $('#mdDeps').val();
+            var empties = $('#mdEmpty').val();
+            var cleaners = $('#tblCleanersModal').tableToJSON();
+            console.log(date);
+            console.log(stays);
+            console.log(deps);
+            console.log(empties);
+            console.log(cleaners);
+
+            @*$.ajax({
+                url: '@Url.Action("InputRooms", "Home")',
+                type: 'POST',
+                data: JSON.stringify(requestData),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                    console.log(xhr);
+                },
+                success: function (result) {
+                    if (result.Success) { // this sets the value from the response
+                        //redirect to other page
+                        var url = '@Url.Action("Index", "Home")';
+                        window.location.href = url;
+                    } else {
+                        alert(result.Result);
+                    }
+                },
+                async: true,
+                processData: false
+            });*@
+
+        });
+
+
+            
+
+    function updateModalDate() {
+        var date = $('#txtDate').val();
+        var datem = document.getElementById('mdDate');
+        datem.innerHTML = date;
+
+    }
+
+    $('#stays')
+        .mouseleave(function () {
+            updateModalLists('stays');
+        });
+
+    $('#departures')
+       .mouseleave(function () {
+           updateModalLists('departures');
+       });
+
+    function updateModalLists(fromWhere) {
+        //1. populate lists from checkboxes
+        var rooms = [];
+        $('#lstStays input[type="checkbox"]').each(function (i, el) {
+            rooms.push(el.name);
+        });
+
+        var empty = [];
+
+        var stays = [];
+        $('#lstStays input[type="checkbox"]:checked').each(function (i, el) {
+            stays.push(el.name);
+        });
+
+
+        var deps = [];
+        $('#lstDepartures input[type="checkbox"]:checked').each(function (i, el) {
+            deps.push(el.name);
+        });
+
+
+        if (fromWhere == 'stays') {
+            $(stays)
+                .each(function (i, stay) {
+
+                    $(deps)
+                        .each(function (i, dep) {
+                            if (dep == stay) {
+                                alert('duplicate!' + dep);
+                                //get the duplicate checkbox and untick it in the list it was just
+                                //selected from (hence why i need the whereFrom variable)
+                                var chk = $('#lstStays input[type="checkbox"]:checked[name=' + dep + ']');
+                                console.log(chk[0]);
+                                chk[0].checked = false;
+                                //rem
+                                var index = stays.indexOf(stay);
+                                stays.splice(index, 1);
+                            }
+
+                        });
+                });
+        } else {
+            $(deps)
+                .each(function (i, dep) {
+
+                    $(stays)
+                        .each(function (i, stay) {
+                            if (stay == dep) {
+                                alert('duplicate!' + stay);
+                                //get the duplicate checkbox and untick it in the list it was just
+                                //selected from (hence why i need the whereFrom variable)
+                                var chk = $('#lstDepartures input[type="checkbox"]:checked[name=' + stay + ']');
+                                chk[0].checked = false;
+                                var index = deps.indexOf(dep);
+                                deps.splice(index, 1);
+                            }
+
+                        });
+                });
+        }
+
+        //populate modal lists
+        var staysM = document.getElementById('mdStays');
+        staysM.innerHTML = stays.toString();
+
+        var depsM = document.getElementById('mdDeps');
+        depsM.innerHTML = deps.toString();
+
+        //create 'empty' list from leftover rooms
+        //for each unchecked box if its also unchecked in other list...
+        $('#lstStays input[type="checkbox"]').each(function (i, stay) {
+            if (!stay.checked) {
+                var dep = $('#lstDepartures input[name=' + stay.name + ']');
+                if (!dep[0].checked) {
+                    empty.push(dep[0].name);
+                }
+            }
+        });
+
+
+        var empties = document.getElementById('mdEmpty');
+        empties.innerHTML = empty.toString();
+
+    }
+
+    $('#btnAssign')
+        .click(function (e) {
+            var table = document.getElementById('tblCleaners');
+            table.innerHTML = "";
+
+            var header = table.createTHead();
+            var body = table.createTBody();
+
+            updateTable(table, body, header);
+
+            var tableM = document.getElementById('tblCleanersModal');
+            tableM.innerHTML = "";
+            var headerM = tableM.createTHead();
+            var bodyM = tableM.createTBody();
+
+            updateTable(tableM, bodyM, headerM);
+
+
+        });
+
+    function updateTable(table, body, header) {
+        var row = header.insertRow(0);
+        var cell1 = row.insertCell(0);
+        cell1.innerHTML = "Room No";
+        var cell2 = row.insertCell(1);
+        cell2.innerHTML = "Cleaner";
+
+        //1. get the cleaner name
+        var cleanerlist = document.getElementById('lstCleaners');
+        //console.log(cleanerlist.options[cleanerlist.selectedIndex].text);
+        var cleaner = cleanerlist.options[cleanerlist.selectedIndex].text;
+        //2. delete all table rows already containing that name
+        var rowCount = table.rows.length;
+        $(table.rows).each(function () {
+            var thisRow = $(this);
+            $(thisRow).find("td:nth-of-type(2)").each(function () {
+                if ($(this).html() == cleaner) {
+                    thisRow.remove();
+                } else {
+                    {
+                        //alert($(this).html());
+                    }
+                }
+            });
+
+        });
+        //3. foreach checked box create a row in the table with the name and room no
+        var names = [];
+        $('#lstRoomsCleaners input[type="checkbox"]:checked').each(function (i, el) {
+            names.push(el.name);
+            var row = body.insertRow(0);
+            var cell = row.insertCell(0);
+            cell.innerHTML = el.name;
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = cleaner;
+        });
+    }
+</script>
