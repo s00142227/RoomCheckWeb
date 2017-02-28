@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Web.Helpers;
+using Microsoft.Ajax.Utilities;
 using RoomCheck;
-using RoomCheckWeb.Controllers;
+using Crypto = RoomCheckWeb.Controllers.Crypto;
 
 namespace RoomCheckWeb.Models
 {
     public class DBRepository
     {
+        List<Room> roomsForInput = new List<Room>();
         private MySqlConnection con =
                    new MySqlConnection(
 "Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=Lollipop12;charset=utf8");
@@ -30,7 +33,7 @@ namespace RoomCheckWeb.Models
                 {
                     //TODO: Where date = today and user = the user that is currently signed in
                     con.Open();
-                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM RoomTbl", con);
+                    MySqlCommand cmd = new MySqlCommand("SELECT * FROM RoomTbl where Date = '2016-10-31'", con);
                     var reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -239,6 +242,165 @@ namespace RoomCheckWeb.Models
                 con.Close();
             }
         }
+
+        public void AddRoomToList(string roomNo, int roomTypeId, string cleaners, string date, List<User>users )
+        {
+            Room room = new Room();
+            room.RoomNo = roomNo;
+            room.RoomTypeID = roomTypeId;
+            room.RoomType = GetRoomTypeById(1);
+            room.CleanStatusID = 1;
+            room.CleanStatus = GetCleanStatusById(1);
+            room.Date = Convert.ToDateTime(date);
+            User cleaner = new User();
+            var cleanerdata = Json.Decode(cleaners);
+            foreach (var c in cleanerdata)
+            {
+                if (c.Key == roomNo)
+                {
+                    cleaner = users.Where(u => u.FirstName.ToUpper() == c.Value.ToUpper()).FirstOrDefault();
+                }
+            }
+            room.User = cleaner;
+            if (cleaner != null) room.UserID = cleaner.ID;
+            else
+            {
+                room.UserID = 6;
+            }
+
+            roomsForInput.Add(room);
+        }
+
+        public void InputEvent(Event ev, List<Room> rooms)
+        {
+
+            
+            //try
+            //{
+            //    if (con.State == ConnectionState.Closed)
+            //    {
+            //        con.Open();
+            //        //first insert the event into the event table, get its id as OUT parameter
+            //        using (
+            //               MySqlCommand cmd =
+            //                   new MySqlCommand(
+            //                       "INSERT INTO EventTbl (`RoomNo`,`RoomOccupiedSTatusID`,`RoomCleanStatusID`,`RoomTypeID`,`UserID`, `Date`) VALUES (@roomNo, 1, @roomClean, @roomType, @user, @date);",
+            //                       con))
+            //        {
+            //            cmd.Parameters.AddWithValue("@roomNo", room.RoomNo);
+            //            cmd.Parameters.AddWithValue("@roomClean", 1);
+            //            cmd.Parameters.AddWithValue("@roomType", room.RoomTypeID);
+            //            cmd.Parameters.AddWithValue("@user", room.UserID);
+            //            cmd.Parameters.AddWithValue("@date", room.Date);
+            //            using (MySqlDataReader reader = cmd.ExecuteReader())
+            //            {
+            //                while (reader.Read())
+            //                {
+
+            //                }
+            //            }
+            //        }
+
+            //        //then loop through rooms and create eventroom entry for each with the new event
+            //        foreach (Room room in rooms)
+            //        {
+            //            using (
+            //                MySqlCommand cmd =
+            //                    new MySqlCommand(
+            //                        "INSERT INTO RoomTbl (`RoomNo`,`RoomOccupiedSTatusID`,`RoomCleanStatusID`,`RoomTypeID`,`UserID`, `Date`) VALUES (@roomNo, 1, @roomClean, @roomType, @user, @date);",
+            //                        con))
+            //            {
+            //                cmd.Parameters.AddWithValue("@roomNo", room.RoomNo);
+            //                cmd.Parameters.AddWithValue("@roomClean", 1);
+            //                cmd.Parameters.AddWithValue("@roomType", room.RoomTypeID);
+            //                cmd.Parameters.AddWithValue("@user", room.UserID);
+            //                cmd.Parameters.AddWithValue("@date", room.Date);
+            //                using (MySqlDataReader reader = cmd.ExecuteReader())
+            //                {
+            //                    while (reader.Read())
+            //                    {
+
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+
+            //}
+            //catch (MySqlException ex)
+            //{
+            //    //Toast.MakeText(this, ex.ToString(), ToastLength.Long).Show();
+            //}
+            //finally
+            //{
+            //    con.Close();
+            //}
+        }
+
+        public void InputRoomData(string date, string stays, string deps, string empties, string cleaners)
+        {
+            
+            List<User> users = GetAllUsersInfo();
+            foreach (string stay in stays.Split(','))
+            {
+                AddRoomToList(stay, 1, cleaners, date, users);
+
+            }
+            foreach (string dep in deps.Split(','))
+            {
+                AddRoomToList(dep, 2, cleaners, date, users);
+            }
+            foreach (string empty in empties.Split(','))
+            {
+                AddRoomToList(empty, 3, cleaners, date, users);
+
+            }
+
+            try
+            {
+                if (con.State == ConnectionState.Closed)
+                {
+                    con.Open();
+
+                    foreach (Room room in roomsForInput)
+                    {
+                        if (room.UserID == 0) room.UserID = 6;
+
+                        using (
+                            MySqlCommand cmd =
+                                new MySqlCommand(
+                                    "INSERT INTO RoomTbl (`RoomNo`,`RoomOccupiedSTatusID`,`RoomCleanStatusID`,`RoomTypeID`,`UserID`, `Date`) VALUES (@roomNo, 1, @roomClean, @roomType, @user, @date);",
+                                    con))
+                        {
+                            cmd.Parameters.AddWithValue("@roomNo", room.RoomNo);
+                            cmd.Parameters.AddWithValue("@roomClean", 1);
+                            cmd.Parameters.AddWithValue("@roomType", room.RoomTypeID);
+                            cmd.Parameters.AddWithValue("@user", room.UserID);
+                            cmd.Parameters.AddWithValue("@date", room.Date);
+                            using (MySqlDataReader reader = cmd.ExecuteReader())
+                            {
+                                while (reader.Read())
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+            catch (MySqlException ex)
+            {
+                //Toast.MakeText(this, ex.ToString(), ToastLength.Long).Show();
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
+
 
         public bool CheckHotelID(string id)
         {
