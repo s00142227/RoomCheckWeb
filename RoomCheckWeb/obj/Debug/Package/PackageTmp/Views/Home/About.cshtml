@@ -107,11 +107,11 @@
             <div class="form-group row col-md-offset-4">
                 <a class="btn btn-success" data-toggle="modal" data-target=".bootstrapmodal">Submit</a>
             </div>
-            <div class="modal fade bootstrapmodal">
+            <div class="modal fade bootstrapmodal" id="myModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header bg-info">
-                            <button data-dismiss="modal" class="close"><span>&times;</span></button>
+                            <button data-dismiss="modal" id="btnCloseModal" class="close"><span>&times;</span></button>
                             <div class="modal-title">
                                 <b>Review Details</b>
                             </div>
@@ -178,20 +178,29 @@
         .click(function (e) {
 
             e.preventDefault();
-
-            var requestData;
             var date = $('#txtDate').val();
-            var stays = $('#mdStays').val();
-            var deps = $('#mdDeps').val();
-            var empties = $('#mdEmpty').val();
-            var cleaners = $('#tblCleanersModal').tableToJSON();
+            var stays = document.getElementById('mdStays').innerHTML;
+            var deps = document.getElementById('mdDeps').innerHTML;
+            var empties = document.getElementById('mdEmpty').innerHTML;
+
+            var cleaners = tableToJSON(document.getElementById('tblCleanersModal'));
+
             console.log(date);
             console.log(stays);
             console.log(deps);
             console.log(empties);
             console.log(cleaners);
 
-            @*$.ajax({
+            var requestData = {
+                date: date,
+                stays: stays,
+                deps: deps,
+                empties: empties,
+                cleaners: cleaners
+            };
+
+
+            $.ajax({
                 url: '@Url.Action("InputRooms", "Home")',
                 type: 'POST',
                 data: JSON.stringify(requestData),
@@ -204,24 +213,49 @@
                 success: function (result) {
                     if (result.Success) { // this sets the value from the response
                         //redirect to other page
-                        var url = '@Url.Action("Index", "Home")';
-                        window.location.href = url;
+                        //var url = '@Url.Action("Index", "Home")';
+                        //window.location.href = url;
+                        alert('success');
+                        //close modal
+                        $('#myModal').modal('hide');
+                        //disable all checkboxes, clear tables and remove date
+                        //var w = document.getElementsByTagName('input');
+                        //for (var i = 0; i < w.length; i++) {
+                        //    if (w[i].type == 'checkbox') {
+                        //        w[i].checked = false;
+                        //    }
+                        //}
+
+                        //or just refresh the page!
+                        window.location.reload(false);
                     } else {
                         alert(result.Result);
+
                     }
                 },
                 async: true,
                 processData: false
-            });*@
+            });
 
         });
 
 
-            
+    function tableToJSON(table) {
+        console.log(table);
+        var obj = {};
+        var row, rows = table.rows;
+        for (var i = 0, iLen = rows.length; i < iLen; i++) {
+            row = rows[i];
+            obj[row.cells[0].textContent] = row.cells[1].textContent;
+        }
+        return JSON.stringify(obj);
+    }
+
 
     function updateModalDate() {
         var date = $('#txtDate').val();
         var datem = document.getElementById('mdDate');
+        console.log('updating date');
         datem.innerHTML = date;
 
     }

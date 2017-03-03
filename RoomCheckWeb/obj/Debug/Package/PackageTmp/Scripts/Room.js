@@ -39,7 +39,7 @@ $(function () {
                         key: false,
                         name: 'CleanStatusID',
                         index: 'CleanStatusID',
-                        editable: true,
+                        editable: false,
                         edittype: 'select',
                         formatter: 'select',
                         editoptions: {
@@ -69,14 +69,12 @@ $(function () {
                          key: false,
                          name: 'UserID',
                          index: 'UserID',
-                         editable: true,
+                         editable: false,
                          edittype: 'select',
                          formatter: 'select',
                          editoptions: {
                              value: {
-                                 1: 'Patricia',
-                                 2: 'Sveta',
-                                 3: 'Jane'
+                                 6: 'Katie'  
                              }
                          }
                      }

@@ -73,7 +73,12 @@ namespace RoomCheckWeb.Controllers
         {
             if (Session["UserEmail"] != null)
             {
-                return View();
+                //populate fiends from database
+                //TODO: change view model - take away cleaners and  input event types
+                RoomEventType model = new RoomEventType();
+                model.Rooms = dbr.GetAllRooms().DistinctBy(r => r.RoomNo).ToList();
+                model.EventTypes = dbr.GetAllEventTypes();
+                return View(model);
             }
             return RedirectToAction("Login");
         }
@@ -201,6 +206,21 @@ namespace RoomCheckWeb.Controllers
             //todo: insert the data into the room table incl status id and cleaner id which I need to find from the data
             dbr.InputRoomData(date, stays, deps, empties, cleaners);
                 
+            return Json(new { Success = true, Result = "success" }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult InputEvent(string date, string rooms, string name, string type, string timeFrom, string timeTo)
+        {
+            //need to perform checks on the data and provide feedback to the user if data problems
+            if (Convert.ToDateTime(date) < DateTime.Now)
+            {
+                return Json(new { Success = false, Result = "Cannot enter data for past dates" }, JsonRequestBehavior.AllowGet);
+            }
+            //todo: check all rooms have been assgned a cleaner
+            //todo: insert the data into the room table incl status id and cleaner id which I need to find from the data
+            dbr.InputEvent(date, rooms, name, type, timeFrom, timeTo);
+
             return Json(new { Success = true, Result = "success" }, JsonRequestBehavior.AllowGet);
         }
 
