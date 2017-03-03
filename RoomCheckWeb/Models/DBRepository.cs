@@ -244,7 +244,7 @@ namespace RoomCheckWeb.Models
             return types;
         }
 
-        public List<int> GetRoomIDs(List<string> rooms)
+        public List<int> GetRoomIDs(List<string> rooms, DateTime date)
         {
             List<int> ids = new List<int>();
 
@@ -256,9 +256,10 @@ namespace RoomCheckWeb.Models
                     foreach (string room in rooms)
                     {
 
-                        using (MySqlCommand cmd = new MySqlCommand("select ID from RoomTbl where RoomNo = @roomNo", con))
+                        using (MySqlCommand cmd = new MySqlCommand("select ID from RoomTbl where RoomNo = @roomNo and Date = @date", con))
                         {
                             cmd.Parameters.AddWithValue("@roomNo", room);
+                            cmd.Parameters.AddWithValue("@date", date);
                             using (MySqlDataReader reader = cmd.ExecuteReader())
                             {
                                 while (reader.Read())
@@ -431,7 +432,7 @@ namespace RoomCheckWeb.Models
             }
 
             long eventId = 0;
-            List<int> roomIDs = GetRoomIDs(roomNos);
+            List<int> roomIDs = GetRoomIDs(roomNos, Convert.ToDateTime(date));
             int eventTypeId = GetEventTypeIDByName(type);
             //todo: convert times to datetimes with the date given
             DateTime timeFrom = Convert.ToDateTime(date + " " + beginTime);
