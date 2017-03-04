@@ -448,7 +448,8 @@ namespace RoomCheckWeb.Models
                     using (
                         MySqlCommand cmd =
                             new MySqlCommand(
-                                "INSERT INTO EventTbl (`EventTypeID`,`StartTime`,`EndTime`,`Description`) VALUES (@eventTypeID, @StartTime, @EndTime, @Description); Select LAST_INSERT_ID() as ID;",
+                                "INSERT INTO EventTbl (`EventTypeID`,`StartTime`,`EndTime`,`Description`) " +
+                                "VALUES (@eventTypeID, @StartTime, @EndTime, @Description); Select LAST_INSERT_ID() as ID;",
                                 con))
                     {
                         cmd.Parameters.AddWithValue("@eventTypeID", eventTypeId);

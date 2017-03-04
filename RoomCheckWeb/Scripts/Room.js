@@ -1,14 +1,42 @@
-﻿//todo: before all of the jqgrid perform function to get all status ids and descriptions in a json string
+﻿var rowsToColor = [];
 $(function () {
         $('#grid')
             .jqGrid({
                 url: "/Home/GetRooms",
                 datatype: 'json',
                 mtype: 'Get',
+                editurl: 'Edit',
+                gridComplete: function () {
+                    for (var i = 0; i < rowsToColor.length; i++) {
+
+                        //code for introducing a 'Gone to Breakfast' button
+                       // var cl = rowsToColor[i];
+                       // be = "<input style='height:22px;width:100px;' class='btn-default small' type='button' value='Breakfast' onclick=BreakfastClick(" + rowsToColor[i] + "); ></ids>";
+                       //jQuery("#grid").setRowData(rowsToColor[i], { Button: be });
+
+                        var status = $("#" + rowsToColor[i]).find("td").eq(4).html();
+                        if (status == "Cleaned" || status == 3) {
+                            $("#" + rowsToColor[i]).find("td").css("background-color", "#ccff99");
+                            $("#" + rowsToColor[i]).find("td").eq(4).html('Cleaned');
+                        }
+                        else if (status == "InProgress" || status == 2) {
+                            $("#" + rowsToColor[i]).find("td").css("background-color", "#cce6ff");
+                            $("#" + rowsToColor[i]).find("td").eq(4).html('InProgress');
+                        } else {
+                            $("#" + rowsToColor[i]).find("td").eq(4).html('Uncleaned');
+                        }
+                    }
+                },
+                ondblClickRow: function(){
+                    var row_id = $("#grid").getGridParam('selrow');
+                    jQuery('#grid').editRow(row_id, true);
+                },
                 colNames: ['ID', 'Room No', 'Room Type', 'Occupied Status', 'Cleaning Status', 'Note', 'Event', 'Cleaner'],
                 colModel: [
+                    
                     { key: true, hidden: true, name: 'ID', index: 'ID' },
                     { key: false, name: 'RoomNo', index: 'RoomNo' },
+                    //{ key: false, name: 'Button', index: 'Button' },
                     {
                         key: false,
                         name: 'RoomTypeID',
@@ -31,7 +59,7 @@ $(function () {
                                 1: 'Unknown',
                                 2: 'Unoccupied',
                                 3: 'Occupied',
-                                3: 'Checked Out'
+                                4: 'Checked Out'
                             }
                         }
                     },
@@ -41,7 +69,7 @@ $(function () {
                         index: 'CleanStatusID',
                         editable: false,
                         edittype: 'select',
-                        formatter: 'select',
+                        formatter: rowColorFormatter,
                         editoptions: {
                             value: {
                                 1: 'Uncleaned',
@@ -143,14 +171,17 @@ $(function () {
                 }
             });
 
-    //function getOccupiedStatus() {
-    //    $.getJSON("yourUrl", null, function (data) {
-    //        if (data != null) {
-    //            //construct string.  
-    //            //(or the server could return a string directly)
-    //        }
-    //    });
-    //}
+        
 
 
 });
+
+function rowColorFormatter(cellValue, options, rowObject) {
+    
+        rowsToColor[rowsToColor.length] = options.rowId;
+    return cellValue;
+}
+
+//function BreakfastClick(row) {
+//    alert('hi');
+//}

@@ -1,17 +1,261 @@
 ﻿@{
-    ViewBag.Title = "Contact";
+    ViewBag.Title = "Create an Event";
+    @model RoomCheckWeb.ViewModels.RoomEventType
 }
-<h2>@ViewBag.Title.</h2>
+<h2>@ViewBag.Title <small>Input Data</small></h2>
 <h3>@ViewBag.Message</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<style>
+    .scrlList {
+        border: 2px solid #ccc;
+        width: 100px;
+        height: 100px;
+        overflow-y: scroll;
+    }
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+    .cleanerTbl {
+        border: 2px solid #ccc;
+        width: 250px;
+        height: 150px;
+        overflow-y: scroll;
+    }
+</style>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<div class="container">
+    <div class="row">
+        <form role="form">
+            <div class="row center-block">
+                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <div class="row form-group">
+                        <label for="txtDate">Date</label>
+                        <input type="date" class="form-control" id="txtDate" onChange="updateModalDate();" placeholder="DD/MM/YYYY">
+                    </div>
+
+                    <div class="row form-group">
+                        <label for="lstEventType">Event Type</label>
+                        <select id="lstEventType" class="form-control">
+                            @foreach (var c in Model.EventTypes)
+                            {
+                                <option value="@c.ID">@c.Description</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="row form-group">
+                        <label for="txtName">Event Name</label>
+                        <input type="text" class="form-control" id="txtName" placeholder="Type a name for the event"/>
+                    </div>
+
+
+
+                </div>
+                <div class="col-xs-10 col-sm-4 col-md-4 col-lg-4">
+                    <div class="row form-group">
+                        <label for="txtBeginTime">Begin Time</label>
+                        <input class="form-control" type="time" value="00:00:00" id="txtBeginTime">
+                    </div>
+
+                    <div class="row form-group">
+                        <label for="txtEndTime">End Time</label>
+                        <input class="form-control" type="time" value="00:00:00" id="txtEndTime">
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <label for="lstCleaners">Rooms Affected</label>
+                            </div>
+                            <div class="row">
+                                <div class="scrlList" id="lstRooms">
+                                    @foreach (var r in Model.Rooms)
+                                    {
+                                        <div id="room-@r.RoomNo">
+                                            <input type="checkbox" name="@r.RoomNo"/>@r.RoomNo
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="clearfix"></div>
+            </div>
+            <br/>
+            <div class="form-group row col-md-offset-2">
+                <a class="btn btn-success" data-toggle="modal" data-target=".bootstrapmodal" id="btnCreate">Create Event</a>
+            </div>
+            <div class="modal fade bootstrapmodal" id="myModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-info">
+                            <button data-dismiss="modal" id="btnCloseModal" class="close"><span>&times;</span></button>
+                            <div class="modal-title">
+                                <b>Review Details</b>
+                            </div>
+                        </div>
+                        <div class="modal-body text-center">
+                            
+                            <div class="row">
+                                <div>
+                                    <label>Date</label>
+                                </div>
+                                <div id="mdDate">None Selected</div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label>Event Type</label>
+                                </div>
+                                <div id="mdEventType">None selected</div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label>Event Name</label>
+                                </div>
+                                <div id="mdName">None Selected</div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label>From</label>
+                                </div>
+                                <div id="mdTimeFrom">None Selected</div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label>To</label>
+                                </div>
+                                <div id="mdTimeTo">None Selected</div>
+                            </div>
+                            <div class="row">
+                                <div>
+                                    <label>Rooms</label>
+                                </div>
+                                <div id="mdRooms">None Selected</div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" id="btnSubmit">Submit</button>
+                            <button class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+        <br /><br />
+    </div>
+</div>
+
+<script type="text/javascript">
+
+
+    $('#btnSubmit')
+        .click(function (e) {
+
+            e.preventDefault();
+            var date = $('#txtDate').val();
+            var rooms = document.getElementById('mdRooms').innerHTML;
+            var name = document.getElementById('mdName').innerHTML;
+            var type = document.getElementById('mdEventType').innerHTML;
+            var timeFrom = document.getElementById('mdTimeFrom').innerHTML;
+            var timeTo = document.getElementById('mdTimeTo').innerHTML;
+
+
+            var requestData = {
+                date: date,
+                rooms: rooms,
+                name: name,
+                type: type,
+                timeFrom: timeFrom,
+                timeTo: timeTo
+            };
+
+
+            $.ajax({
+                url: '@Url.Action("InputEvent", "Home")',
+                type: 'POST',
+                data: JSON.stringify(requestData),
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                error: function (xhr) {
+                    alert('Error: ' + xhr.statusText);
+                    console.log(xhr);
+                },
+                success: function (result) {
+                    if (result.Success) { // this sets the value from the response
+                        //redirect to other page
+                        //var url = '@Url.Action("Index", "Home")';
+                        //window.location.href = url;
+                        alert('success');
+                        //close modal
+                        $('#myModal').modal('hide');
+                        window.location.reload(false);
+                    } else {
+                        alert(result.Result);
+
+                    }
+                },
+                async: true,
+                processData: false
+            });
+
+        });
+
+
+
+    function updateModalDate() {
+        var date = $('#txtDate').val();
+        var datem = document.getElementById('mdDate');
+        console.log('updating date');
+        datem.innerHTML = date;
+
+    }
+
+    $('#btnCreate')
+        .mouseenter(function () {
+            console.log('mouse entering create event button');
+            updateModalLists();
+        });
+
+    
+
+    function updateModalLists() {
+        //1. populate list from checkboxes
+        var rooms = [];
+        $('#lstRooms input[type="checkbox"]:checked').each(function (i, el) {
+            rooms.push(el.name);
+        });
+
+
+        var roomsM = document.getElementById('mdRooms');
+        roomsM.innerHTML = rooms.toString();
+
+        //also populate eventtype, name, timefrom, timeto
+        var eventTypes = document.getElementById('lstEventType');
+        var type = eventTypes.options[eventTypes.selectedIndex].text;
+        var mdEventType = document.getElementById('mdEventType');
+        mdEventType.innerHTML = type.toString();
+
+        var name = $('#txtName').val();
+        var mdName = document.getElementById('mdName');
+        console.log(name);
+        mdName.innerHTML = name.toString();
+
+        var beginTime = $('#txtBeginTime').val();
+        var beginTimeM = document.getElementById('mdTimeFrom');
+        beginTimeM.innerHTML = beginTime;
+
+        var endTime = $('#txtEndTime').val();
+        var endTimeM = document.getElementById('mdTimeTo');
+        endTimeM.innerHTML = endTime;
+
+
+    }
+
+
+    
+</script>
