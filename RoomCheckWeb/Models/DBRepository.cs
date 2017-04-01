@@ -16,17 +16,14 @@ namespace RoomCheckWeb.Models
         List<Room> roomsForInput = new List<Room>();
         private MySqlConnection con =
                    new MySqlConnection(
-"Server=s00142227db.cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=Lollipop12;charset=utf8");
+"Server= newauroradbcluster.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=kmorris;Password=s00142227;charset=utf8");
 
 
         public List<Room> GetAllRooms()
         {
             List<Room> rooms = new List<Room>();
 
-            //            MySqlConnection con =
-            //                   new MySqlConnection(
-            //"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
-            try
+           try
             {
 
                 if (con.State == ConnectionState.Closed)
