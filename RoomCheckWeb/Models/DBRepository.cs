@@ -47,8 +47,11 @@ namespace RoomCheckWeb.Models
                         var Note = "";
                         if (reader["Note"] is string)
                             Note = (string)reader["Note"];
+                        var Request = "";
+                        if (reader["GuestRequest"] is string)
+                            Request = (string)reader["GuestRequest"];
                         var User = (int)reader["UserID"];
-                        rooms.Add(new Room(ID, RoomNo, roomOcc, roomClean, roomType, Note, User));
+                        rooms.Add(new Room(ID, RoomNo, roomOcc, roomClean, roomType, Note, User, Request));
                     }
 
 
@@ -91,8 +94,11 @@ namespace RoomCheckWeb.Models
                                 var note = "";
                                 if (reader["Note"] is string)
                                     note = (string)reader["Note"];
+                                var request = "";
+                                if (reader["GuestRequest"] is string)
+                                    note = (string)reader["GuestRequest"];
                                 room = new Room((int)reader["ID"], (string)reader["RoomNo"],
-                                    (int)reader["RoomOccupiedStatusID"], (int)reader["RoomCleanStatusID"], (int)reader["RoomTypeID"], note, (int)reader["UserID"]);
+                                    (int)reader["RoomOccupiedStatusID"], (int)reader["RoomCleanStatusID"], (int)reader["RoomTypeID"], note, (int)reader["UserID"], request);
                             }
                         }
                     }
@@ -158,9 +164,6 @@ namespace RoomCheckWeb.Models
 
         public List<User> GetAllCleaners()
         {
-            //MySqlConnection con =
-            //       new MySqlConnection(
-            //           "Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             List<User> users = new List<User>();
 
             try
@@ -768,23 +771,21 @@ namespace RoomCheckWeb.Models
             return roomType;
         }
 
-        public void UpdateRoom(int id, string cleanStat, string note)
+        public void UpdateRoom(int id, string cleanStat, string note, string request)
         {
-            //            MySqlConnection con =
-            //                   new MySqlConnection(
-            //"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
-            try
+             try
             {
 
                 if (con.State == ConnectionState.Closed)
                 {
                     con.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("UPDATE RoomTbl SET RoomCleanStatusID = (SELECT ID from RoomCleanStatusTbl WHERE Description LIKE @roomclean), Note = @note WHERE ID = @id;", con))
+                    using (MySqlCommand cmd = new MySqlCommand("UPDATE RoomTbl SET RoomCleanStatusID = (SELECT ID from RoomCleanStatusTbl WHERE Description LIKE @roomclean), Note = @note, GuestRequest = @request WHERE ID = @id;", con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@roomclean", cleanStat);
                         cmd.Parameters.AddWithValue("@note", note);
+                        cmd.Parameters.AddWithValue("@request", note);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -802,12 +803,8 @@ namespace RoomCheckWeb.Models
 
         }
 
-        public void UpdateRoomFull(int id, int roomType, int occStatus, int cleanStatus, string note)
+        public void UpdateRoomFull(int id, int roomType, int occStatus, int cleanStatus, string note, string request)
         {
-            //TODO: add more fields that might be edited
-            //            MySqlConnection con =
-            //                   new MySqlConnection(
-            //"Server=roomcheckaurora.cluster-cshbhaowu4cu.eu-west-1.rds.amazonaws.com;Port=3306;database=RoomCheckDB;User Id=s00142227;Password=Lollipop12;charset=utf8");
             try
             {
 
@@ -815,13 +812,14 @@ namespace RoomCheckWeb.Models
                 {
                     con.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("UPDATE RoomTbl SET RoomTypeID = @roomTypeID, RoomOccupiedStatusID = @OccStatusID, RoomCleanStatusID = @CleanStatusID, Note = @Note WHERE ID = @id;", con))
+                    using (MySqlCommand cmd = new MySqlCommand("UPDATE RoomTbl SET RoomTypeID = @roomTypeID, RoomOccupiedStatusID = @OccStatusID, RoomCleanStatusID = @CleanStatusID, Note = @Note, GuestRequest = @GuestRequest WHERE ID = @id;", con))
                     {
                         cmd.Parameters.AddWithValue("@id", id);
                         cmd.Parameters.AddWithValue("@roomTypeID", roomType);
                         cmd.Parameters.AddWithValue("@OccStatusID", occStatus);
                         cmd.Parameters.AddWithValue("@CleanStatusID", cleanStatus);
                         cmd.Parameters.AddWithValue("@Note", note);
+                        cmd.Parameters.AddWithValue("@GuestRequest", request);
                         cmd.ExecuteNonQuery();
                     }
                 }

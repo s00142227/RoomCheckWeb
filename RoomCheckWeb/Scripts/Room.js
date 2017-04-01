@@ -31,11 +31,11 @@ $(function () {
                     var row_id = $("#grid").getGridParam('selrow');
                     jQuery('#grid').editRow(row_id, true);
                 },
-                colNames: ['ID', 'Room No', 'Room Type', 'Occupied Status', 'Cleaning Status', 'Note', 'Event', 'Cleaner'],
+                colNames: ['ID', 'Room No', 'Room Type', 'Occupied Status', 'Cleaning Status', 'Guest Request', 'Note', 'Event', 'Cleaner'],
                 colModel: [
                     
                     { key: true, hidden: true, name: 'ID', index: 'ID' },
-                    { key: false, name: 'RoomNo', index: 'RoomNo' },
+                    { key: false, name: 'RoomNo', index: 'RoomNo', width: 75 },
                     //{ key: false, name: 'Button', index: 'Button' },
                     {
                         key: false,
@@ -67,7 +67,7 @@ $(function () {
                         key: false,
                         name: 'CleanStatusID',
                         index: 'CleanStatusID',
-                        editable: false,
+                        editable: true,
                         edittype: 'select',
                         formatter: rowColorFormatter,
                         editoptions: {
@@ -76,6 +76,16 @@ $(function () {
                                 2: 'InProgress',
                                 3: 'Cleaned'
                             }
+                        }
+                    },
+                    {
+                        key: false,
+                        name: 'GuestRequest',
+                        index: 'GuestRequest',
+                        editable: true,
+                        edittype: 'text',
+                        editoptions: {
+                            size: '10'
                         }
                     },
                     {

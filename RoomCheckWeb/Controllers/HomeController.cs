@@ -60,7 +60,7 @@ namespace RoomCheckWeb.Controllers
         {
             if (Session["UserEmail"] != null)
             {
-                //populate fiends from database
+                //populate fields from database
                 RoomCleaner model = new RoomCleaner();
                 model.Rooms = dbr.GetAllRooms().DistinctBy(r => r.RoomNo).ToList();
                 model.Cleaners = dbr.GetAllCleaners();
@@ -99,7 +99,7 @@ namespace RoomCheckWeb.Controllers
                 if (ModelState.IsValid)
                 {
                     dbr.UpdateRoomFull(objRoom.ID, Convert.ToInt32(objRoom.RoomTypeID),
-                        Convert.ToInt32(objRoom.OccupiedStatusID), objRoom.CleanStatusID, objRoom.Note);
+                        Convert.ToInt32(objRoom.OccupiedStatusID), objRoom.CleanStatusID, objRoom.Note, objRoom.GuestRequest);
                     msg = "Saved Successfully";
                 }
                 else
@@ -123,10 +123,11 @@ namespace RoomCheckWeb.Controllers
 
         public ActionResult Login()
         {
-            //if (Session["UserEmail"] != null)
-            //{
-            //    return RedirectToAction("Index");
-            //}
+            //currently not working - newver finds user in session
+            if (Session["UserEmail"] != null)
+            {
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
