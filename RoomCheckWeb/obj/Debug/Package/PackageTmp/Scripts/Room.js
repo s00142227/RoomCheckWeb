@@ -25,6 +25,15 @@ $(function () {
                         } else {
                             $("#" + rowsToColor[i]).find("td").eq(4).html('Uncleaned');
                         }
+
+                        var request = $("#" + rowsToColor[i]).find("td").eq(5).html();
+                        if (request != "" && request != null && request != "&nbsp;") {
+                            $("#" + rowsToColor[i]).find("td").eq(5).css("background-color", "#daa520");
+                            var roomNo = $("#" + rowsToColor[i]).find("td").eq(1).html();
+                            alert("Guest request from " + roomNo);
+
+                        }
+
                     }
                 },
                 ondblClickRow: function(){
